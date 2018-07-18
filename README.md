@@ -5,7 +5,9 @@ A utility to track objects on a canvas by unique px color.
 
 When using HTML5 canvas to render elements, we don't have the convenience of readily available *mouseover* events per object, which makes interaction difficult.
 `canvas-color-tracker` provides a system for keeping track of objects in your canvas by indexing them by a unique color, which can be retrieved by determining the *1px* color that is directly under the mouse pointer.
+
 This is generally done using a spare/shadow canvas which is not attached to the DOM, but is synchronyzed in terms of object positions with the main canvas. On this shadow canvas we render the objects filled with artificial unique colors that are keys to the object's data, so that by attaching *mousemove* events to the whole canvas we can determine which objects are being hovered on.
+
 `canvas-color-tracker` is just the registry part of this process, which generates unique color keys per object and supports addition and retrieval of objects. It also includes a mechanism for validating the color keys using checksum encoding. This is necessary because of pixel antialiasing/smoothing on the boundary of canvas objects, leading into new color mutations which invalidate the object color key lookup.
 
 
