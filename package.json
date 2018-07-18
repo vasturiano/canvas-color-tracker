@@ -1,6 +1,6 @@
 {
   "name": "canvas-color-tracker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility to track objects on a canvas by unique px color",
   "main": "dist/canvas-color-tracker.min.js",
   "repository": {
