@@ -25,18 +25,19 @@
   },
   "homepage": "https://github.com/vasturiano/canvas-color-tracker",
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && rollup -c",
+    "build": "rimraf dist && mkdir dist && rollup -c",
     "watch": "rollup -c -w",
     "minify": "uglifyjs dist/canvas-color-tracker.js -o dist/canvas-color-tracker.min.js -c -m --comments '/Version/'",
     "prepublish": "npm run build && npm run minify"
   },
   "dependencies": {},
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "rollup": "^0.56.5",
-    "rollup-plugin-babel": "^3.0.3",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.63.2",
+    "rollup-plugin-babel": "^3.0.7",
     "rollup-watch": "^4.3.1",
-    "uglify-js": "3.3.11"
+    "uglify-js": "3.4.5"
   }
 }
