@@ -1,7 +1,11 @@
-# canvas-color-tracker
-A utility to track objects on a canvas by unique px color.
+canvas-color-tracker
+====================
 
-[![NPM](https://nodei.co/npm/canvas-color-tracker.png?compact=true)](https://nodei.co/npm/canvas-color-tracker/)
+[![NPM package][npm-img]][npm-url]
+[![Build Size][build-size-img]][build-size-url]
+[![Dependencies][dependencies-img]][dependencies-url]
+
+A utility to track objects on a canvas by unique px color.
 
 When using HTML5 canvas to render elements, we don't have the convenience of readily available *mouseover* events per object, which makes interaction difficult.
 `canvas-color-tracker` provides a system for keeping track of objects in your canvas by indexing them by a unique color, which can be retrieved by determining the *1px* color that is directly under the mouse pointer.
@@ -9,7 +13,6 @@ When using HTML5 canvas to render elements, we don't have the convenience of rea
 This is generally done using a spare/shadow canvas which is not attached to the DOM, but is synchronyzed in terms of object positions with the main canvas. On this shadow canvas we render the objects filled with artificial unique colors that are keys to the object's data, so that by attaching *mousemove* events to the whole canvas we can determine which objects are being hovered on.
 
 `canvas-color-tracker` is just the registry part of this process, which generates unique color keys per object and supports addition and retrieval of objects. It also includes a mechanism for validating the color keys using checksum encoding. This is necessary because of pixel antialiasing/smoothing on the boundary of canvas objects, leading into new color mutations which invalidate the object color key lookup.
-
 
 Check out the canvas examples:
 * [100 objects](https://vasturiano.github.io/canvas-color-tracker/example/canvas-small.html) [[source](https://github.com/vasturiano/canvas-color-tracker/blob/master/example/canvas-small.html)]
@@ -62,3 +65,9 @@ Adds an object to the registry, and returns a unique color (hex string) that can
 
 Retrieve an object from the registry by its unique color key. The color should be passed as an array of 3 octet numbers indicating the color's _r_, _g_, _b_ encoding. This is the same format as returned by the canvas context `getImageData` method. If the color passes the checksum verification and has a registered object in the registry, it is returned. Otherwise the method returns `null`.
 
+[npm-img]: https://img.shields.io/npm/v/canvas-color-tracker.svg
+[npm-url]: https://npmjs.org/package/canvas-color-tracker
+[build-size-img]: https://img.shields.io/bundlephobia/minzip/canvas-color-tracker.svg
+[build-size-url]: https://bundlephobia.com/result?p=canvas-color-tracker
+[dependencies-img]: https://img.shields.io/david/vasturiano/canvas-color-tracker.svg
+[dependencies-url]: https://david-dm.org/vasturiano/canvas-color-tracker
