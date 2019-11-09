@@ -61,9 +61,9 @@ The parameter `checkum_bits` defines how many bits should be used for storing th
 
 Adds an object to the registry, and returns a unique color (hex string) that can be used to retrieve the object in the future. Object can be of any type, even primitive values. The color returned encodes the checksum, and will be checked for validity at retrieval time. In case the registry is full and has reached its limit of objects, a value of `null` is returned, indicating that the object was not stored.
 
-<b>lookup</b>(<i>[r, g, b]</i>)
+<b>lookup</b>(<i>string</i> or <i>[r, g, b]</i>)
 
-Retrieve an object from the registry by its unique color key. The color should be passed as an array of 3 octet numbers indicating the color's _r_, _g_, _b_ encoding. This is the same format as returned by the canvas context `getImageData` method. If the color passes the checksum verification and has a registered object in the registry, it is returned. Otherwise the method returns `null`.
+Retrieve an object from the registry by its unique color key. The color should be passed either as a plain string such as `#23a69c`, or an array of 3 octet numbers indicating the color's _r_, _g_, _b_ encoding. This array is the same format as returned by the canvas context `getImageData` method. If the color passes the checksum verification and has a registered object in the registry, it is returned. Otherwise the method returns `null`.
 
 ## Giving Back
 

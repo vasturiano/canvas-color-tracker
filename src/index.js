@@ -1,7 +1,14 @@
+import tinyColor from 'tinycolor2';
+
 const ENTROPY = 123; // Raise numbers to prevent collisions in lower indexes
 
 const int2HexColor = num => `#${Math.min(num, Math.pow(2, 24)).toString(16).padStart(6, '0')}`;
 const rgb2Int = (r, g, b) => (r << 16) + (g << 8) + b;
+
+const colorStr2Int = str => {
+  const { r, g, b } = tinyColor(str).toRgb();
+  return rgb2Int(r, g, b);
+};
 
 const checksum = (n, csBits) => (n * ENTROPY) % Math.pow(2, csBits);
 
@@ -25,8 +32,8 @@ export default class {
     return color;
   }
 
-  lookup([r, g, b]) {
-    const n = rgb2Int(r, g, b);
+  lookup(color) {
+    const n = typeof color === 'string' ? colorStr2Int(color) : rgb2Int(...color);
 
     if (!n) return null; // 0 index is reserved for background
 
