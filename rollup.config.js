@@ -1,3 +1,5 @@
+import resolve from 'rollup-plugin-node-resolve';
+import commonJs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import { name, homepage, version } from './package.json';
 
@@ -13,6 +15,8 @@ export default {
     }
   ],
   plugins: [
+    resolve(),
+    commonJs(),
     babel({ exclude: 'node_modules/**' })
   ]
 };
