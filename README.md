@@ -34,7 +34,7 @@ or even
 ```
 then
 ```
-const myTracker = ColorTracker();
+const myTracker = new ColorTracker();
 
 const myObject = { ... };
 const myObjectColor = myTracker.register(myObject);
