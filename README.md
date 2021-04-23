@@ -49,11 +49,12 @@ const hoverObject = myTracker.lookup(hoverColor);
 
 ### Instantiation
 
-new <b>ColorTracker</b>([<i>checksum_bits</i>])
+new <b>ColorTracker</b>()
 
-Creates a new object registry. 
+Creates a new object registry with a capacity of 2^24 objects.
 
-The parameter `checkum_bits` defines how many bits should be used for storing the checksum of the colors. Higher values produce less chance of collisions introduced by anti-aliasing of pixels on object boundaries, which yield artificial erroneous colors. Each bit used for checksum eats away from the maximum size of the registry, as less bits are available for indexing objects. The maximum number of objects that can be stored in the registry is equal to `2^(24-checksum_bits) - 1` (one position is reserved for background). If not provided, `checksum_bits` takes the default of **6** bits, generating a registry of max size *~262k* objects. Normally, you'll only need to override `checksum_bits` if you wish to store more than this amount of objects.
+Probability of collisions at canvas drawn edges increases to certainty when the registry reaches capacity. This is due to browser anti-aliasing blending colors. The probability
+is something like N / 2^24 of an edge pixel colliding, where N is the size of the registry.
 
 ### Methods
 
