@@ -1,3 +1,5 @@
+## Forked to support Brave's bit fiddling privacy feature
+
 canvas-color-tracker
 ====================
 
