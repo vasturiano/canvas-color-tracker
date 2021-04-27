@@ -17,8 +17,8 @@
     }
   </style>
 
-  <script src="//unpkg.com/canvas-color-tracker"></script>
-  <!--<script src="../dist/canvas-color-tracker.js"></script>-->
+  <!-- <script src="//unpkg.com/canvas-color-tracker"></script> -->
+  <script src="../dist/canvas-color-tracker.js"></script>
 
   <script src="circle-generator.js"></script>
 </head>
@@ -29,7 +29,7 @@
   <script>
     const NUM_CIRCLES = 1e6;
 
-    const colorTracker = new ColorTracker(4); // Reduce checksum to support 2^20 (~1M) objects
+    const colorTracker = new ColorTracker();
 
     const tooltip = document.getElementById('tooltip');
     const canvas = document.getElementById('my-canvas');

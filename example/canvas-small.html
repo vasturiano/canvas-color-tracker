@@ -17,8 +17,8 @@
     }
   </style>
 
-  <script src="//unpkg.com/canvas-color-tracker"></script>
-  <!--<script src="../dist/canvas-color-tracker.js"></script>-->
+  <!-- <script src="//unpkg.com/canvas-color-tracker"></script> -->
+  <script src="../dist/canvas-color-tracker.js"></script>
 
   <script src="circle-generator.js"></script>
 </head>
@@ -42,6 +42,7 @@
       cv.width = window.innerWidth;
       cv.height = window.innerHeight;
     });
+    shadowCtx.imageSmoothingEnabled = false;
 
     const circles = genCircles(canvas.width, canvas.height, NUM_CIRCLES);
 
@@ -49,7 +50,8 @@
       // Render in main canvas
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI, false);
-      ctx.fillStyle = 'rgba(197, 42, 27, 0.6)';
+      
+      ctx.fillStyle = Math.random() > 0.5 ? 'rgba(0, 0, 0, 1)' : 'rgba(127, 127, 127, 1)';
       ctx.fill();
 
       // Register in colorTracker

@@ -1,47 +1,117 @@
-import tinyColor from 'tinycolor2';
+const MAX_COLORS = 0xffffff;
+const MAX_COLORS_BRAVE = 0x1fffff;
 
-const ENTROPY = 123; // Raise numbers to prevent collisions in lower indexes
+// Z-Order curve and Morton codes are used to map from 1d to 3d while preserving
+// locality. Then by reversing the order of bits in each channel, the color
+// space is traversed in a way that tends to keep colors spaced evenly away
+// from eachother. It's clear that if all the colors are adjacent, then collisions
+// due to anti-aliasing blending are more likely, what would be optimum is an
+// interesting question: 
+// https://dsp.stackexchange.com/questions/74600/error-correcting-code-using-rgb-space-with-a-lookup-table
 
-const int2HexColor = num => `#${Math.min(num, Math.pow(2, 24)).toString(16).padStart(6, '0')}`;
-const rgb2Int = (r, g, b) => (r << 16) + (g << 8) + b;
+// Morton code and decode:
+// http://johnsietsma.com/2019/12/05/morton-order-introduction/
+// https://fgiesen.wordpress.com/2009/12/13/decoding-morton-codes/
 
-const colorStr2Int = str => {
-  const { r, g, b } = tinyColor(str).toRgb();
-  return rgb2Int(r, g, b);
+const part1By2 = (x) => {
+  x = x & 0x000003ff;               // x = ---- ---- ---- ---- ---- --98 7654 3210
+  x = (x ^ (x << 16)) & 0xff0000ff; // x = ---- --98 ---- ---- ---- ---- 7654 3210
+  x = (x ^ (x << 8)) & 0x0300f00f;  // x = ---- --98 ---- ---- 7654 ---- ---- 3210
+  x = (x ^ (x << 4)) & 0x030c30c3;  // x = ---- --98 ---- 76-- --54 ---- 32-- --10
+  x = (x ^ (x << 2)) & 0x09249249;  // x = ---- 9--8 --7- -6-- 5--4 --3- -2-- 1--0
+  return x;
 };
 
-const checksum = (n, csBits) => (n * ENTROPY) % Math.pow(2, csBits);
+const compact1By2 = (x) => {
+  x = x & 0x09249249;               // x = ---- 9--8 --7- -6-- 5--4 --3- -2-- 1--0
+  x = (x ^ (x >> 2)) & 0x030c30c3;  // x = ---- --98 ---- 76-- --54 ---- 32-- --10
+  x = (x ^ (x >> 4)) & 0x0300f00f;  // x = ---- --98 ---- ---- 7654 ---- ---- 3210
+  x = (x ^ (x >> 8)) & 0xff0000ff;  // x = ---- --98 ---- ---- ---- ---- 7654 3210
+  x = (x ^ (x >> 16)) & 0x000003ff; // x = ---- ---- ---- ---- ---- --98 7654 3210
+  return x;
+};
+
+const encodeMorton3 = (r, g, b) =>
+  (part1By2(r) << 2) + (part1By2(g) << 1) + part1By2(b);
+
+const decodeMorton3 = (code) => ({
+  r: compact1By2(code >> 2),
+  g: compact1By2(code >> 1),
+  b: compact1By2(code),
+});
+
+const reverseEightBits = (x) => {
+  x = ((x & 0xf0) >> 4) | ((x & 0x0f) << 4);
+  x = ((x & 0xcc) >> 2) | ((x & 0x33) << 2);
+  x = ((x & 0xaa) >> 1) | ((x & 0x55) << 1);
+  return x >>> 0;
+};
+
+const hexColorToRgb = (hex) => {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16),
+      ]
+    : null;
+};
+
+const intToHexPair = (n) => n.toString(16).padStart(2, "0");
+const reverseAndHex = (n) => intToHexPair(reverseEightBits(n));
+
+const intToColor = (n) => {
+  const { r, g, b } = decodeMorton3(n);
+  return `#${reverseAndHex(r)}${reverseAndHex(g)}${reverseAndHex(b)}`;
+};
+
+const rgbToInt = (r, g, b) => {
+  return encodeMorton3(
+    reverseEightBits(r),
+    reverseEightBits(g),
+    reverseEightBits(b)
+  );
+};
 
 export default class {
-  constructor(csBits = 6) {
-    this.csBits = csBits; // How many bits to reserve for checksum. Will eat away into the usable size of the registry.
-    this.registry = ['__reserved for background__']; // indexed objects for rgb lookup;
+  constructor() {
+    // indexed objects for rgb lookup, position 0 reserved for background.
+    this.registry = [null];
+
+    this.maxColors = MAX_COLORS;
+    this.isBrave = false;
+
+    // Brave randomly will change the lowest bit of R, G, or B for context
+    // getImageData return values. This is a privacy protecting feature.
+    navigator.brave &&
+      navigator.brave.isBrave().then((res) => {
+        if (res) {
+          this.isBrave = true;
+          // The last bit of r, g, b is indexed last.
+          this.maxColors = MAX_COLORS_BRAVE;
+        }
+      });
   }
 
   register(obj) {
-    if (this.registry.length >= Math.pow(2, 24 - this.csBits)) { // color has 24 bits (-checksum)
+    if (this.registry.length >= this.maxColors) {
       return null; // Registry is full
     }
 
-    const idx = this.registry.length;
-    const cs = checksum(idx, this.csBits);
-
-    const color = int2HexColor(idx + (cs << (24 - this.csBits)));
-
+    const color = intToColor(this.registry.length);
     this.registry.push(obj);
     return color;
   }
 
   lookup(color) {
-    const n = typeof color === 'string' ? colorStr2Int(color) : rgb2Int(...color);
-
-    if (!n) return null; // 0 index is reserved for background
-
-    const idx = n & (Math.pow(2, 24 - this.csBits) - 1); // registry index
-    const cs = (n >> (24 - this.csBits)) & (Math.pow(2, this.csBits) - 1); // extract bits reserved for checksum
-
-    if (checksum(idx, this.csBits) !== cs || idx >= this.registry.length) return null; // failed checksum or registry out of bounds
-
-    return this.registry[idx];
+    var [r, g, b] = typeof color === "string" ? hexColorToRgb(color) : color;
+    if (this.isBrave) {
+      // First bit could be fiddled, so zero it.
+      r = r & 0xfe;
+      g = g & 0xfe;
+      b = b & 0xfe;
+    }
+    return this.registry[rgbToInt(r, g, b)] ?? null;
   }
-}
+};
