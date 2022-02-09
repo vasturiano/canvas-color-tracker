@@ -3,7 +3,7 @@ canvas-color-tracker
 
 [![NPM package][npm-img]][npm-url]
 [![Build Size][build-size-img]][build-size-url]
-[![Dependencies][dependencies-img]][dependencies-url]
+[![NPM Downloads][npm-downloads-img]][npm-downloads-url]
 
 A utility to track objects on a canvas by unique px color.
 
@@ -21,25 +21,25 @@ Check out the canvas examples:
 
 ## Quick start
 
-```
+```js
 import ColorTracker from 'canvas-color-tracker';
 ```
 or
-```
+```js
 const ColorTracker = require('canvas-color-tracker');
 ```
 or even
-```
+```html
 <script src="//unpkg.com/canvas-color-tracker"></script>
 ```
 then
-```
+```js
 const myTracker = new ColorTracker();
 
 const myObject = { ... };
 const myObjectColor = myTracker.register(myObject);
 
-(...)
+// ...
 
 const hoverColor = context.getImageData(x, y, 1, 1).data;
 const hoverObject = myTracker.lookup(hoverColor);
@@ -69,9 +69,9 @@ Retrieve an object from the registry by its unique color key. The color should b
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=L398E7PKP47E8&currency_code=USD&source=url) If this project has helped you and you'd like to contribute back, you can always [buy me a ☕](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=L398E7PKP47E8&currency_code=USD&source=url)!
 
-[npm-img]: https://img.shields.io/npm/v/canvas-color-tracker.svg
+[npm-img]: https://img.shields.io/npm/v/canvas-color-tracker
 [npm-url]: https://npmjs.org/package/canvas-color-tracker
-[build-size-img]: https://img.shields.io/bundlephobia/minzip/canvas-color-tracker.svg
+[build-size-img]: https://img.shields.io/bundlephobia/minzip/canvas-color-tracker
 [build-size-url]: https://bundlephobia.com/result?p=canvas-color-tracker
-[dependencies-img]: https://img.shields.io/david/vasturiano/canvas-color-tracker.svg
-[dependencies-url]: https://david-dm.org/vasturiano/canvas-color-tracker
+[npm-downloads-img]: https://img.shields.io/npm/dt/canvas-color-tracker
+[npm-downloads-url]: https://www.npmtrends.com/canvas-color-tracker
