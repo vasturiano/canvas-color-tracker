@@ -22,6 +22,12 @@
     "name": "Vasco Asturiano",
     "url": "http://bl.ocks.org/vasturiano"
   },
+  "contributors": [
+    {
+      "name": "Alex",
+      "url": "https://alexwarren.co"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vasturiano/canvas-color-tracker/issues"
@@ -35,9 +41,6 @@
     "build": "rimraf dist && rollup -c",
     "dev": "rollup -w -c",
     "prepare": "npm run build"
-  },
-  "dependencies": {
-    "tinycolor2": "^1.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.14",
