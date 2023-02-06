@@ -24,11 +24,7 @@ Check out the canvas examples:
 ```js
 import ColorTracker from 'canvas-color-tracker';
 ```
-or
-```js
-const ColorTracker = require('canvas-color-tracker');
-```
-or even
+or using a *script* tag
 ```html
 <script src="//unpkg.com/canvas-color-tracker"></script>
 ```
