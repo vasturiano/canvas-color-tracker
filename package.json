@@ -9,7 +9,8 @@
   "types": "dist/canvas-color-tracker.d.ts",
   "exports": {
     "umd": "./dist/canvas-color-tracker.min.js",
-    "default": "./dist/canvas-color-tracker.mjs"
+    "default": "./dist/canvas-color-tracker.mjs",
+    "types": "./dist/canvas-color-tracker.d.ts"
   },
   "sideEffects": false,
   "repository": {
