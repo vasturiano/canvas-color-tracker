@@ -1,0 +1,1 @@
+import ColorTracker from "../src";
