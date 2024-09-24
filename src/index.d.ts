@@ -5,6 +5,7 @@ declare class ColorTracker {
 
   register(obj: Obj): string | null;
   lookup(color: string | [number, number, number]): Obj | null;
+  reset(): void;
 }
 
 export default ColorTracker;
