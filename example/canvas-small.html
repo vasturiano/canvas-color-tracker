@@ -35,7 +35,7 @@
     const canvas = document.getElementById('my-canvas');
     const shadowCanvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const shadowCtx = shadowCanvas.getContext('2d');
+    const shadowCtx = shadowCanvas.getContext('2d', { willReadFrequently: true });
 
     // size canvases
     [canvas, shadowCanvas].forEach(cv => {
