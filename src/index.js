@@ -33,6 +33,8 @@ export default class {
   }
 
   lookup(color) {
+    if (!color) return null; // invalid color
+
     const n = typeof color === 'string' ? colorStr2Int(color) : rgb2Int(...color);
 
     if (!n) return null; // 0 index is reserved for background
