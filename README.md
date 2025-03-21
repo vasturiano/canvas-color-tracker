@@ -26,7 +26,7 @@ import ColorTracker from 'canvas-color-tracker';
 ```
 or using a *script* tag
 ```html
-<script src="//unpkg.com/canvas-color-tracker"></script>
+<script src="//cdn.jsdelivr.net/npm/canvas-color-tracker"></script>
 ```
 then
 ```js
